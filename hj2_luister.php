@@ -120,7 +120,7 @@ if (empty($preview_url)) { die("Fout: Geen audio gevonden."); }
         function startMuziekEnQuiz() {
             if (audio.paused) {
                 // 1. Vertel de Pi dat de muziek start -> dit opent het scherm bij de spelers!
-                fetch('luister.php?id=<?= $id ?>&ajax_start_music=1')
+                fetch('hj2_luister.php?id=<?= $id ?>&ajax_start_music=1')
                     .then(r => r.json())
                     .then(data => {
                         audio.play();
@@ -139,7 +139,7 @@ if (empty($preview_url)) { die("Fout: Geen audio gevonden."); }
 
         function startLiveMonitor() {
             monitorInterval = setInterval(() => {
-                fetch('luister.php?id=<?= $id ?>&ajax_get_live_answers=1')
+                fetch('hj2_luister.php?id=<?= $id ?>&ajax_get_live_answers=1')
                     .then(r => r.json())
                     .then(spelers => {
                         if(spelers.length === 0) return;
