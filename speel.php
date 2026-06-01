@@ -83,6 +83,9 @@ if (empty($preview_url)) {
 
         <!-- 🧱 BOUWSTEEN 1: AUDIO CONTROLLER -->
         <?php require_once('comp_audio.php'); ?>
+		
+		<!-- 🧱 BOUWSTEEN 4: NIEUW! MEERKEUZE QUIZ KNOPPEN -->
+        <?php require_once('comp_quiz.php'); ?>
 
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_info.php'); ?>
