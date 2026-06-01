@@ -89,7 +89,7 @@ $huidige_speler = $_SESSION['user'];
             </div>
         </div>
 
-        <a href="../hitjam2/index.php" class="btn btn-back">⬅️ Verlaat naar Menu</a>
+        <a href="index.php" class="btn btn-back">⬅️ Verlaat naar Menu</a>
     </div>
 
     <script>
