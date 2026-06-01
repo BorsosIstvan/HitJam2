@@ -36,11 +36,12 @@ setInterval(function() {
                 statusTxt.style.display = 'block';
                 statusTxt.innerHTML = `🔥 Groeps Battle actief! Gestart door: <strong style='color:#ff9500;'>${data.gestart_door}</strong><br>⏱️ Tijd over: <strong style='color:#ff2d55;'>${Math.ceil(data.resterende_tijd)}s</strong>`;
                 
-                // Als er centraal een nieuw liedje is gekozen dat we nog niet afspelen [INDEX]
-                if (data.current_song_id !== mpRondeId) {
+                // 🔥 CRUCIALE FIX: Alleen doorsturen en herladen als het ID ECHT verschilt van de huidige ronde! [INDEX]
+                // Dit voorkomt dat de browser de muziek elke seconde reset of onderbreekt [INDEX].
+                if (parseInt(data.current_song_id) !== parseInt(mpRondeId)) {
                     mpRondeId = data.current_song_id;
                     
-                    // Forceer het speelveld om dit centrale liedje te laden! [INDEX]
+                    // Schakel over naar het centrale liedje [INDEX]
                     window.location.href = 'speel.php?id=' + data.current_song_id + '&multiplayer=1';
                 }
             } else {
@@ -51,4 +52,5 @@ setInterval(function() {
         })
         .catch(e => console.error("Sync loop weigert:", e));
 }, 1000); // Check elke seconde [INDEX]
+
 </script>
