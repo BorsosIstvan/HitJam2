@@ -5,25 +5,21 @@
 </div>
 
 <script>
-let mpRondeId = 0;
+// 🔥 CRUCIALE FIX: Lees direct het actieve ID uit de URL van de browser
+const urlParams = new URLSearchParams(window.location.search);
+let mpRondeId = parseInt(urlParams.get('id')) || 0;
 
 function activeerGroepsBattle() {
     fetch('hj2_trigger_battle.php')
-        .then(r => {
-            if(!r.ok) throw new Error("Netwerkfout " + r.status);
-            return r.json();
-        })
+        .then(r => r.json())
         .then(data => {
             if(data.status === 'success') {
                 console.log("Groeps battle succesvol geactiveerd!");
-            } else {
-                alert("🚨 Fout bij starten: " + (data.message || "Onbekende fout"));
             }
-        })
-        .catch(err => alert("🌐 Verbindingsfout met Pi: " + err.message));
+        });
 }
 
-// Deze check-loop draait op de achtergrond en luistert of er een groepsbattle start [INDEX]
+// Deze check-loop luistert of er centraal een nieuwe battle start
 setInterval(function() {
     fetch('hj2_sync_loop.php')
         .then(r => r.json())
@@ -36,21 +32,23 @@ setInterval(function() {
                 statusTxt.style.display = 'block';
                 statusTxt.innerHTML = `🔥 Groeps Battle actief! Gestart door: <strong style='color:#ff9500;'>${data.gestart_door}</strong><br>⏱️ Tijd over: <strong style='color:#ff2d55;'>${Math.ceil(data.resterende_tijd)}s</strong>`;
                 
-                // 🔥 CRUCIALE FIX: Alleen doorsturen en herladen als het ID ECHT verschilt van de huidige ronde! [INDEX]
-                // Dit voorkomt dat de browser de muziek elke seconde reset of onderbreekt [INDEX].
-                if (parseInt(data.current_song_id) !== parseInt(mpRondeId)) {
-                    mpRondeId = data.current_song_id;
-                    
-                    // Schakel over naar het centrale liedje [INDEX]
+                // 🔥 ENORME UPGRADE: Alleen herladen als het centrale ID ECHT verschilt van de URL!
+                if (parseInt(data.current_song_id) !== mpRondeId) {
+                    mpRondeId = parseInt(data.current_song_id);
+                    // Stuur de browser synchroon naar de nieuwe quiz-ronde
                     window.location.href = 'speel.php?id=' + data.current_song_id + '&multiplayer=1';
                 }
             } else {
                 startBtn.style.display = 'block';
                 statusTxt.style.display = 'none';
-                mpRondeId = 0;
+                // Als de ronde op de server is afgelopen, maar we staan nog in de multiplayer-link:
+                if (window.location.search.includes('multiplayer=1')) {
+                    // Stuur iedereen netjes terug naar de lege solo-modus/lobby
+                    window.location.href = 'speel.php';
+                }
             }
         })
         .catch(e => console.error("Sync loop weigert:", e));
-}, 1000); // Check elke seconde [INDEX]
-
+}, 1000);
 </script>
+
