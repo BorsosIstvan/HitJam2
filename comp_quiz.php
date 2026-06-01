@@ -45,21 +45,37 @@ function controleerJaar(knop Element, gekozenJaar, correctJaar) {
     const feedbackDiv = document.getElementById('quizFeedback');
     feedbackDiv.style.display = 'block';
 
-    // Geef visuele feedback op basis van de keuze [INDEX]
+	// Geef visuele feedback op basis van de keuze [INDEX]
     if (gekozenJaar === correctJaar) {
         knopElement.style.borderColor = '#00ffcc';
         knopElement.style.background = 'rgba(0, 255, 204, 0.1)';
-        feedbackDiv.innerHTML = "<span style='color:#00ffcc;'>🎉 Goedgekeurd!</span>";
+        
+        // Bereken punten: Basis 50 + extra streak bonus!
+        let huidigeStreak = parseInt(document.getElementById('localStreak').innerText) + 1;
+        let puntenWinst = 50 + (huidigeStreak * 10);
+        let huidigeScore = parseInt(document.getElementById('localScore').innerText) + puntenWinst;
+        
+        // Update het scherm direct
+        document.getElementById('localScore').innerText = huidigeScore;
+        document.getElementById('localStreak').innerText = huidigeStreak;
+        feedbackDiv.innerHTML = `<span style='color:#00ffcc;'>🎉 Goed! (+${puntenWinst} Pnt)</span>`;
+        
+        // Synchroniseer met SQLite op de achtergrond [INDEX]
+        updateDatabaseScore(puntenWinst, huidigeStreak);
     } else {
         knopElement.style.borderColor = '#ff2d55';
         knopElement.style.background = 'rgba(255, 45, 85, 0.1)';
         feedbackDiv.innerHTML = "<span style='color:#ff2d55;'>❌ Helaas Fout!</span>";
         
-        // Licht de juiste knop extra op in het groen zodat je het antwoord ziet
+        // Reset streak op het scherm naar 0
+        document.getElementById('localStreak').innerText = 0;
+        
+        // Synchroniseer de reset van de streak met de database (0 punten erbij) [INDEX]
+        updateDatabaseScore(0, 0);
+        
+        // Licht de juiste knop op
         alleKnoppen.forEach(btn => {
-            if (parseInt(btn.innerText) === correctJaar) {
-                btn.style.borderColor = '#00ffcc';
-            }
+            if (parseInt(btn.innerText) === correctJaar) { btn.style.borderColor = '#00ffcc'; }
         });
     }
 

@@ -80,6 +80,9 @@ if (empty($preview_url)) {
             <h1 class="logo">HitJam 2</h1>
             <p style="color:#aaa; font-size:14px;">Gebouwd met onafhankelijke bouwstenen!</p>
         </div>
+		
+		<!-- 🧱 BOUWSTEEN 5: NIEUW! LIVE SCORE & STREAK DISLPAY -->
+		<?php require_once('comp_punten.php'); ?>
 
         <!-- 🧱 BOUWSTEEN 1: AUDIO CONTROLLER -->
         <?php require_once('comp_audio.php'); ?>
