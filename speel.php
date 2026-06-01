@@ -7,6 +7,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 require_once('hj2_db.php');
 
+/*
 try {
     $stmt = $db->query("SELECT id, artist, title, year FROM game_songs ORDER BY RANDOM() LIMIT 1");
     $song = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -17,6 +18,22 @@ try {
 } catch (Exception $e) {
     die("Database fout: " . $e->getMessage());
 }
+*/
+try {
+    // 🔥 MULTIPLAYER UPDATE: Als er een ID is meegegeven door de groepsbattle, laad die! [INDEX]
+    if (isset($_GET['id'])) {
+        $stmt = $db->prepare("SELECT id, artist, title, year FROM game_songs WHERE id = ?");
+        $stmt->execute([(int)$_GET['id']]);
+        $song = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        // Anders laden we gewoon een random nummer (solo-modus)
+        $stmt = $db->query("SELECT id, artist, title, year FROM game_songs ORDER BY RANDOM() LIMIT 1");
+        $song = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    if (!$song) { die("Liedje niet gevonden."); }
+} catch (Exception $e) { die("Database fout: " . $e->getMessage()); }
+
 
 $schone_artiest = str_replace('&', ' ', $song['artist']);
 $zoekterm = urlencode($schone_artiest . " " . $song['title']);
@@ -95,6 +112,9 @@ if (empty($preview_url)) {
 
         <!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
         <?php require_once('comp_knoppen.php'); ?>
+		
+		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
+        <?php require_once('comp_multiplayer_sync.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
         <?php require_once('comp_ranglijst.php'); ?>
