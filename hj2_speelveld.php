@@ -151,11 +151,19 @@ $huidige_speler = $_SESSION['user'];
                 });
         }, 1000);
 
-        function startNieuweBattle() {
-            fetch('hj2_start_battle.php')
-                .then(r => r.json())
-                .then(res => { if(res.status === 'error') alert(res.message); });
-        }
+		function startNieuweBattle() {
+			fetch('hj2_start_battle.php')
+				.then(r => r.json())
+				.then(res => { 
+					if(res.status === 'error') {
+						// Dit laat direct een pop-up zien op je Samsung als de database klaagt!
+						alert(res.message); 
+					}
+				})
+				.catch(err => {
+					alert("Netwerkfout bij het starten van de battle: " + err);
+				});
+		}
 
         function activeerGeluidEnQuiz() {
             geluidGeactiveerd = true;

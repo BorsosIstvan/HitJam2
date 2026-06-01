@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once('hj2_db.php'); // Zorg dat de databaseverbinding geladen is
 
 // AFHANDELEN VAN UITLOGGEN
 if (isset($_GET['logout'])) { 
@@ -16,7 +17,13 @@ if (!$is_logged_in) {
     header("Location: login.php");
     exit;
 }
+
+// 🔥 FIX: Voeg de ingelogde speler direct toe aan het scorebord met 0 punten als hij er nog niet in staat!
+$username = $_SESSION['user'];
+$stmt = $db->prepare("INSERT OR IGNORE INTO scores (username, points, gekozen_jaar) VALUES (?, 0, 0)");
+$stmt->execute([$username]);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="nl">
