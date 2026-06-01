@@ -45,7 +45,7 @@ if (isset($_POST['start_nieuwe_ronde'])) {
 		$db->exec("UPDATE scores SET gekozen_jaar = 0");
         
         // Stuur de leider direct door naar de luisterpagina om de muziek te starten op de JBL!
-        header("Location: luister.php?id=" . $song_id . "&battle=1");
+        header("Location: hj2_luister.php?id=" . $song_id . "&battle=1");
         exit;
     } else {
         $melding = "❌ Geen liedjes gevonden in de database.";
