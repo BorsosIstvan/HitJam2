@@ -102,6 +102,10 @@ if (empty($preview_url)) {
     </div>
 
     <!-- HIER KOMT DE JAVASCRIPT UIT STAP 3B -->
+	<script>
+    // 🔥 FIX: Zorg dat de ranglijst-bouwsteen weet wie de huidige speler is!
+    const huidigeSpeler = "<?= $_SESSION['user'] ?>";
+	</script>
 
 </body>
 </html>
