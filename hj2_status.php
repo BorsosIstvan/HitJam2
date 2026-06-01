@@ -3,6 +3,13 @@ session_start();
 if (!isset($_SESSION['loggedin'])) { exit; }
 require_once('hj2_db.php');
 
+// 🔥 FIX 1: Voeg spelers direct toe aan het scorebord als ze de app openen [INDEX]
+if (isset($_SESSION['user'])) {
+    $current_user = $_SESSION['user'];
+    $stmt = $db->prepare("INSERT OR IGNORE INTO scores (username, points, gekozen_jaar) VALUES (?, 0, 0)");
+    $stmt->execute([$current_user]);
+}
+
 $status = $db->query("SELECT * FROM game_status WHERE id = 1")->fetch(PDO::FETCH_ASSOC);
 
 $options = [];
@@ -32,7 +39,7 @@ if ($status && (int)$status['round_active'] === 1) {
         if ($song_info) {
             $real_year = (int)$song_info['year'];
             
-            // Genereer 4 jaarknoppen
+            // 🔥 FIX 2: De herstelde complete jaarknoppen-generator
             $years_pool = [$real_year];
             while (count($years_pool) query("SELECT username, points, gekozen_jaar FROM scores ORDER BY points DESC")->fetchAll(PDO::FETCH_ASSOC);
 
