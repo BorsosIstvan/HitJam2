@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedin'])) { header("Location: ../hitjam/login.php"); exit; }
+if (!isset($_SESSION['loggedin'])) { header("Location: ../hitjam2/login.php"); exit; }
 $huidige_speler = $_SESSION['user'];
 ?>
 
