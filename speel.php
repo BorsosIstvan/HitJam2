@@ -5,7 +5,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-require_once('db.php');
+require_once('hj2_db.php');
 
 // 🔥 AUTOMATISCHE EXTRA TABELLEN CHECK FOR THE BATTLE
 $db->exec("CREATE TABLE IF NOT EXISTS game_status (
