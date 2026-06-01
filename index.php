@@ -177,7 +177,7 @@ if (!$is_logged_in) {
             </div>
 
             <!-- Iedereen kan meespelen -->
-            <a href="speelveld.php" class="btn btn-primary">🎮 Start Quiz Battle</a>
+            <a href="hj2_speelveld.php" class="btn btn-primary">🎮 Start Quiz Battle</a>
             
             <!-- Iedereen kan zijn eigen QR-handkaart opvragen -->
             <a href="kaart.php" class="btn btn-secondary">🃏 Mijn Handkaart</a>
