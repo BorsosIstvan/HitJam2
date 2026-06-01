@@ -1,0 +1,10 @@
+Ik maak nu de HitJam2.
+Wat wil ik in de hj2?
+Ik wil een unieke speelomgeving, de speler kan zien de online spelers,
+iederen kan de hit starten, maar als iemand heeft al gestart moet wachten totn de ende van de round.
+Wat kunnen gebruiken van de bestande code?
+De leider_dashboard, gecombineerd met de speelveld.php
+Ik wil dat iederen kunnen een batle starten, en als het is al gestart dan kunnen jaar kozen,
+en om dezelfde sherm te zien de resultaat, de score van spelers allees.
+En ook om naar iederen kunnen de liedje luisteren, (maken een unmute knop)
+De admin mode hier speelt niet meer, het kunnen we later gebruiken voor adding lidjes en andere dingen regelen.
