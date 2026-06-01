@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('hj2_db.php'); // Zorg dat de databaseverbinding geladen is
+require_once('hj2_db.php');
 
 // AFHANDELEN VAN UITLOGGEN
 if (isset($_GET['logout'])) { 
@@ -18,12 +18,12 @@ if (!$is_logged_in) {
     exit;
 }
 
-// 🔥 FIX: Voeg de ingelogde speler direct toe aan het scorebord met 0 punten als hij er nog niet in staat!
+// 🔥 DE MULTIPLAYER FIX: Voeg de ingelogde speler direct toe aan het scorebord met 0 punten [INDEX]
+// Dit zorgt ervoor dat spelers direct live zichtbaar zijn op elkaars scherm! [INDEX]
 $username = $_SESSION['user'];
 $stmt = $db->prepare("INSERT OR IGNORE INTO scores (username, points, gekozen_jaar) VALUES (?, 0, 0)");
 $stmt->execute([$username]);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="nl">
@@ -42,7 +42,6 @@ $stmt->execute([$username]);
         .btn:active { transform: scale(0.96); }
         .btn-primary { background: linear-gradient(90deg, #ff2d55, #e01b43); color: white; box-shadow: 0 4px 20px rgba(255, 45, 85, 0.3); }
         .btn-secondary { background: #1f2026; color: #ffffff; border: 1px solid #33343f; }
-        .btn-admin { background: linear-gradient(90deg, #007bff, #0056b3); color: white; }
         .user-status { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; font-size: 13px; text-align: center; color: #b3b3b3; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; }
         .user-name { color: #ff9500; font-weight: bold; }
         .footer { font-size: 11px; color: #4f4f4f; text-align: center; letter-spacing: 1px; }
@@ -61,13 +60,8 @@ $stmt->execute([$username]);
                 Ingelogd als: <span class="user-name"><?= htmlspecialchars($_SESSION['user']) ?></span>
             </div>
 
-            <!-- KNOP NAAR HET NIEUWE MULTIPLAYER SPEELVELD -->
+            <!-- KNOP NAAR DE LIVE MULTIPLAYER GAME -->
             <a href="hj2_speelveld.php" class="btn btn-primary">🎮 Start Multiplayer Battle</a>
-
-            <!-- ADMIN GEBIED (Later te gebruiken voor beheer) -->
-            <?php if ($is_admin): ?>
-                <a href="../hitjam/voeg_liedje_toe.php" class="btn btn-admin">⚙️ Database Beheer (Muziek)</a>
-            <?php endif; ?>
 
             <a href="index.php?logout=1" class="btn btn-secondary" style="color: #ff2d55; margin-top: 20px; font-size: 14px; padding: 10px;">Uitloggen</a>
         </div>

@@ -2,7 +2,7 @@
 session_start();
 require_once('hj2_db.php');
 
-// Als iemand al is ingelogd, stuur hem direct door naar het HJ2 hoofdmenu
+// Als iemand al is ingelogd, stuur hem direct door naar het hoofdmenu
 if (isset($_SESSION['loggedin'])) {
     header("Location: index.php");
     exit;
