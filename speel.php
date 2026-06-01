@@ -23,7 +23,8 @@ try {
 // Haal de 30-seconden preview op via Apple Music [INDEX]
 $schone_artiest = str_replace('&', ' ', $song['artist']);
 $zoekterm = urlencode($schone_artiest . " " . $song['title']);
-$api_url = "https://apple.com" . $zoekterm . "&limit=1&entity=song";
+//$api_url = "https://apple.com" . $zoekterm . "&limit=1&entity=song";
+$api_url = "https://itunes.apple.com/search?term=" . $zoekterm . "&limit=1&entity=song";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $api_url);
