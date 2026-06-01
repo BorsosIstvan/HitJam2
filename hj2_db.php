@@ -1,28 +1,33 @@
 <?php
-// 🔥 Schakel alle foutmeldingen live in op je scherm
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 try {
-    // 1. Koppel met de database
-    require_once('hj2_db.php');
+    // We gebruiken het exacte pad naar jouw SQLite database
+    $db_path = '/var/www/html/HitData/hitjam.db';
+    $db = new PDO('sqlite:' . $db_path);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 2. Probeer de status te resetten naar de lobby-stand
-    $db->exec("UPDATE game_status SET round_active = 0, music_started = 0, current_song_id = 0, gestart_door = '' WHERE id = 1");
-    
-    // 3. Wis de tijdelijke antwoorden van spelers voor de monitor
-    $db->exec("UPDATE scores SET gekozen_jaar = 0");
+    // 🔥 FIX: We gebruiken hier overal consequent de variabele '$db'
+    $db->exec("CREATE TABLE IF NOT EXISTS game_status (
+        id INTEGER PRIMARY KEY,
+        current_song_id INTEGER DEFAULT 0,
+        round_active INTEGER DEFAULT 0,
+        music_started INTEGER DEFAULT 0,
+        start_time REAL DEFAULT 0,
+        timestamp_einde REAL DEFAULT 0,
+        gestart_door TEXT DEFAULT ''
+    )");
 
-    echo "<div style='font-family:sans-serif; padding:20px; background:#28a745; color:white; border-radius:10px; max-width:500px; margin:40px auto; text-align:center;'>";
-    echo "<h3>🎉 Succesvol Gereset!</h3>";
-    echo "<p>De database staat weer in de lobby-stand. Je kunt nu een nieuwe battle starten!</p>";
-    echo "</div>";
+    // Zorg dat de scoretabel de gekozen antwoorden live kan bijhouden [INDEX]
+    try {
+        $db->exec("ALTER TABLE scores ADD COLUMN gekozen_jaar INTEGER DEFAULT 0");
+    } catch(Exception $e) { /* Kolom bestaat al, negeer de fout */ }
+
+    // Zorg voor de initiële statusrij
+    $checkStatus = $db->query("SELECT COUNT(*) FROM game_status")->fetchColumn();
+    if ($checkStatus == 0) {
+        $db->exec("INSERT INTO game_status (id, current_song_id, round_active) VALUES (1, 0, 0)");
+    }
 
 } catch (Exception $e) {
-    // Als er een typefout in de SQL zit of een kolom mist, zie je dat hier direct rood op wit!
-    echo "<div style='font-family:sans-serif; padding:20px; background:#dc3545; color:white; border-radius:10px; max-width:500px; margin:40px auto;'>";
-    echo "<h3>❌ SQLite Fout gevonden:</h3>";
-    echo "<p>" . htmlspecialchars($e->getMessage()) . "</p>";
-    echo "</div>";
+    die("Database verbindingsfout in HJ2: " . $e->getMessage());
 }
 ?>
