@@ -37,7 +37,6 @@ if ($status && (int)$status['round_active'] === 1) {
 			$api_url = "https://itunes.apple.com/search?term=" . $zoekterm . "&limit=1&entity=song";
             
             $ch = curl_init();
-            curl_setopt($ch, Barb_URL, $api_url); // Gebruik veilige cURL
             curl_setopt($ch, CURLOPT_URL, $api_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
@@ -47,7 +46,9 @@ if ($status && (int)$status['round_active'] === 1) {
             
             if ($response) {
                 $json = json_decode($response, true);
-                $preview_url = $json['results'][0]['previewUrl'] ?? "";
+                if (isset($json['results'][0]['previewUrl'])) {
+                    $preview_url = $json['results'][0]['previewUrl'];
+                }
             }
         }
     }
@@ -57,7 +58,7 @@ if ($status && (int)$status['round_active'] === 1) {
 echo json_encode([
     'round_active' => (int)$status['round_active'],
     'current_song_id' => (int)$status['current_song_id'],
-    'gestart_door' => $status['gestart_door'],
+    'gestart_door' => $status['gestart_door'] ?? '',
     'resterende_tijd' => round($resterende_tijd, 1),
     'preview_url' => $preview_url
 ]);
