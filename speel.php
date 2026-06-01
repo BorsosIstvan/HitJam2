@@ -78,75 +78,21 @@ if (empty($preview_url)) {
     <div class="app-container">
         <div>
             <h1 class="logo">HitJam 2</h1>
-            <p style="color:#aaa; font-size:14px;">Luister naar de track en onthul de gegevens!</p>
+            <p style="color:#aaa; font-size:14px;">Gebouwd met onafhankelijke bouwstenen!</p>
         </div>
 
-        <audio id="soloAudio" src="<?= $preview_url ?>"></audio>
+        <!-- 🧱 BOUWSTEEN 1: AUDIO CONTROLLER -->
+        <?php require_once('comp_audio.php'); ?>
 
-        <div class="play-box">
-            <button class="btn-audio" id="playBtn" onclick="toggleMuziek()">▶️</button>
-        </div>
+        <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
+        <?php require_once('comp_info.php'); ?>
 
-        <!-- LIVE KAART: Toont de SQLite gegevens na de klik -->
-        <div class="song-info-card" id="infoCard">
-            <div class="info-year"><?= $song['year'] ?></div>
-            <div class="info-title"><?= htmlspecialchars($song['title']) ?></div>
-            <div class="info-artist"><?= htmlspecialchars($song['artist']) ?></div>
-        </div>
+        <!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
+        <?php require_once('comp_knoppen.php'); ?>
 
-        <div>
-            <!-- Knop om de gegevens zichtbaar te maken -->
-            <button class="btn btn-reveal" id="revealBtn" onclick="onthulGegevens()">👁️ Onthul Gegevens</button>
-            
-            <!-- Volgende ronde knop (ververst de pagina voor een nieuw liedje) -->
-            <a href="speel.php" class="btn btn-next" id="nextBtn">🔄 Volgende Nummer</a>
-            
-            <a href="index.php" class="btn btn-back">⬅️ Hoofdmenu</a>
-        </div>
     </div>
 
     <!-- HIER KOMT DE JAVASCRIPT UIT STAP 3B -->
-	    <script>
-        const audio = document.getElementById('soloAudio');
-        const playBtn = document.getElementById('playBtn');
-
-        function toggleMuziek() {
-            if (audio.paused) {
-                audio.play()
-                    .then(() => {
-                        playBtn.innerHTML = "⏸️";
-                        playBtn.classList.add('playing');
-                    })
-                    .catch(err => {
-                        alert("Klik nogmaals voor geluid!");
-                    });
-            } else {
-                audio.pause();
-                playBtn.innerHTML = "▶️";
-                playBtn.classList.remove('playing');
-            }
-        }
-
-        audio.onended = function() {
-            playBtn.innerHTML = "▶️";
-            playBtn.classList.remove('playing');
-        };
-
-        // Nieuwe functie: Laat de kaart zien en wissel de knoppen om
-        function onthulGegevens() {
-            audio.pause(); // Stop de muziek direct bij het onthullen
-            playBtn.innerHTML = "▶️";
-            playBtn.classList.remove('playing');
-
-            // Toon de verborgen kaart met titel/artiest/jaar
-            document.getElementById('infoCard').style.display = 'block';
-            
-            // Wissel de knoppen om
-            document.getElementById('revealBtn').style.display = 'none';
-            document.getElementById('nextBtn').style.display = 'block';
-        }
-    </script>
-
 
 </body>
 </html>
