@@ -233,7 +233,7 @@ $huidige_speler = $_SESSION['user'];
         }
 
         // Bouw het scorebord in de lobby op
-        function bouwScorebord(lijst, rondeActief) {
+        function bouwScorebord_oud(lijst, rondeActief) {
             let html = '';
             lijst.forEach((speler, index) => {
                 let statusIcoon = (rondeActief === 1 && speler.gekozen_jaar > 0) ? '✅' : '⏳';
@@ -244,6 +244,35 @@ $huidige_speler = $_SESSION['user'];
             });
             document.getElementById('lobbyScores').innerHTML = html;
         }
+		
+		// voor het test
+		function bouwScorebord(lijst, rondeActief) {
+			console.log("Live spelers ontvangen van server:", lijst); // Debug-lijn voor de console
+			
+			let html = '';
+			
+			// Als de lijst van de server leeg is
+			if (!lijst || lijst.length === 0) {
+				html = '<p style="color:#666; font-size:14px; margin:10px 0;">Geen actieve spelers gevonden...</p>';
+				document.getElementById('lobbyScores').innerHTML = html;
+				return;
+			}
+
+			// Loop door alle spelers die in de database staan
+			lijst.forEach((speler, index) => {
+				// Bepaal het status-icoontje (✅ als ze al gedrukt hebben, ⏳ als ze nog nadenken)
+				let statusIcoon = (rondeActief === 1 && speler.gekozen_jaar > 0) ? '✅' : '⏳';
+				
+				html += `<div class="score-row">
+							<span>${index + 1}. 👤 <strong style="color:#ff9500;">${speler.username}</strong> ${statusIcoon}</span>
+							<span style="color:#00ffcc; font-weight:bold;">${speler.points} Pnt</span>
+						 </div>`;
+					});
+					
+			// Zet de HTML live in de lobby-box
+			document.getElementById('lobbyScores').innerHTML = html;
+		}
+
 
         // Toon live antwoorden
         function updateLiveAntwoorden(lijst) {
