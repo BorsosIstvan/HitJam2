@@ -94,63 +94,72 @@ $huidige_speler = $_SESSION['user'];
         let geluidGeactiveerd = false;
 
         // De live-stream ticker die elke seconde de Pi polst
-        setInterval(function() {
-            fetch('hj2_status.php')
-                .then(response => {
-                    if (!response.ok) throw new Error("Status API onbereikbaar");
-                    return response.json();
-                })
-                .then(data => {
-                    // Update het scorebord in de lobby of onder het resultaat
-                    bouwScorebord(data.scorebord, data.round_active);
+        // De live-stream ticker met actieve foutopsporing
+		setInterval(function() {
+			fetch('hj2_status.php')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error("HTTP Foutcode: " + response.status);
+					}
+					return response.text(); // Pak eerst tekst om PHP-fouten te kunnen vangen
+				})
+				.then(text => {
+					try {
+						const data = JSON.parse(text);
+						
+						// Als de data goed aankomt, bouw het scorebord
+						if (data.scorebord) {
+							bouwScorebord(data.scorebord, data.round_active);
+						}
 
-                    if (data.round_active === 1) {
-                        // Koppel de Apple Music stream live aan de audio tag
-                        const audio = document.getElementById('hj2Audio');
-                        if (audio.src !== data.preview_url) {
-                            audio.src = data.preview_url;
-                        }
+						if (data.round_active === 1) {
+							const audio = document.getElementById('hj2Audio');
+							if (audio && audio.src !== data.preview_url) {
+								audio.src = data.preview_url;
+							}
 
-                        // Als er een NIEUWE ronde is gestart waar we nog niet in zitten
-                        if (data.current_song_id !== momenteelRondeId) {
-                            momenteelRondeId = data.current_song_id;
-                            alGedruktDezeRonde = false;
-                            geluidGeactiveerd = false;
-                            
-                            // Schakel om naar de unmute knop
-                            document.getElementById('lobbyView').style.display = 'none';
-                            document.getElementById('resultView').style.display = 'none';
-                            document.getElementById('unmuteView').style.display = 'block';
-                        }
+							if (data.current_song_id !== momenteelRondeId) {
+								momenteelRondeId = data.current_song_id;
+								alGedruktDezeRonde = false;
+								geluidGeactiveerd = false;
+								
+								document.getElementById('lobbyView').style.display = 'none';
+								document.getElementById('resultView').style.display = 'none';
+								document.getElementById('unmuteView').style.display = 'block';
+							}
 
-                        // Update de live countdown timer op het scherm
-                        if (document.getElementById('quizView').style.display === 'flex') {
-                            document.getElementById('timerCountdown').innerHTML = Math.ceil(data.resterende_tijd);
-                        }
+							if (document.getElementById('quizView').style.display === 'flex') {
+								document.getElementById('timerCountdown').innerHTML = Math.ceil(data.resterende_tijd);
+							}
 
-                        // Toon live wat de andere spelers invullen
-                        updateLiveAntwoorden(data.scorebord);
-                        
-                        // Vul alvast de liedjesinfo in voor de onthulling dadelijk
-                        if(data.song_details) {
-                            document.getElementById('resYear').innerHTML = data.song_details.year;
-                            document.getElementById('resTitle').innerHTML = data.song_details.title;
-                            document.getElementById('resArtist').innerHTML = data.song_details.artist;
-                        }
-                    } else {
-                        // Geen ronde actief -> Iedereen direct terug naar de lobby!
-                        if (momenteelRondeId !== 0) {
-                            momenteelRondeId = 0;
-                            document.getElementById('quizView').style.display = 'none';
-                            document.getElementById('resultView').style.display = 'none';
-                            document.getElementById('unmuteView').style.display = 'none';
-                            document.getElementById('lobbyView').style.display = 'block';
-                            document.getElementById('hj2Audio').pause();
-                        }
-                    }
-                })
-                .catch(err => console.error("Ticker error:", err));
-        }, 1000);
+							updateLiveAntwoorden(data.scorebord);
+							
+							if(data.song_details) {
+								document.getElementById('resYear').innerHTML = data.song_details.year;
+								document.getElementById('resTitle').innerHTML = data.song_details.title;
+								document.getElementById('resArtist').innerHTML = data.song_details.artist;
+							}
+						} else {
+							if (momenteelRondeId !== 0) {
+								momenteelRondeId = 0;
+								document.getElementById('quizView').style.display = 'none';
+								document.getElementById('resultView').style.display = 'none';
+								document.getElementById('unmuteView').style.display = 'none';
+								document.getElementById('lobbyView').style.display = 'block';
+								const audio = document.getElementById('hj2Audio');
+								if (audio) audio.pause();
+							}
+						}
+					} catch(e) {
+						// 🔥 HIER VANGEN WE DE FOUT: Als hj2_status.php crasht, zie je hier de reden!
+						alert("❌ Fout in hj2_status.php:\n" + text);
+					}
+				})
+				.catch(err => {
+					console.error("Netwerkfout:", err);
+				});
+		}, 1000);
+
 
         // Functie om de battle te starten
         function startNieuweBattle() {
