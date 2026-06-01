@@ -87,6 +87,178 @@ $huidige_speler = $_SESSION['user'];
     </div>
 
     <!-- HIER KOMT HET JS COMPONENT UIT DE VOLGENDE STAP -->
+	    <script>
+        const huidigeSpeler = "<?= $huidige_speler ?>";
+        let momenteelRondeId = 0;
+        let alGedruktDezeRonde = false;
+        let geluidGeactiveerd = false;
+
+        // De live-stream ticker die elke seconde de Pi polst
+        setInterval(function() {
+            fetch('hj2_status.php')
+                .then(response => {
+                    if (!response.ok) throw new Error("Status API onbereikbaar");
+                    return response.json();
+                })
+                .then(data => {
+                    // Update het scorebord in de lobby of onder het resultaat
+                    bouwScorebord(data.scorebord, data.round_active);
+
+                    if (data.round_active === 1) {
+                        // Koppel de Apple Music stream live aan de audio tag
+                        const audio = document.getElementById('hj2Audio');
+                        if (audio.src !== data.preview_url) {
+                            audio.src = data.preview_url;
+                        }
+
+                        // Als er een NIEUWE ronde is gestart waar we nog niet in zitten
+                        if (data.current_song_id !== momenteelRondeId) {
+                            momenteelRondeId = data.current_song_id;
+                            alGedruktDezeRonde = false;
+                            geluidGeactiveerd = false;
+                            
+                            // Schakel om naar de unmute knop
+                            document.getElementById('lobbyView').style.display = 'none';
+                            document.getElementById('resultView').style.display = 'none';
+                            document.getElementById('unmuteView').style.display = 'block';
+                        }
+
+                        // Update de live countdown timer op het scherm
+                        if (document.getElementById('quizView').style.display === 'flex') {
+                            document.getElementById('timerCountdown').innerHTML = Math.ceil(data.resterende_tijd);
+                        }
+
+                        // Toon live wat de andere spelers invullen
+                        updateLiveAntwoorden(data.scorebord);
+                        
+                        // Vul alvast de liedjesinfo in voor de onthulling dadelijk
+                        if(data.song_details) {
+                            document.getElementById('resYear').innerHTML = data.song_details.year;
+                            document.getElementById('resTitle').innerHTML = data.song_details.title;
+                            document.getElementById('resArtist').innerHTML = data.song_details.artist;
+                        }
+                    } else {
+                        // Geen ronde actief -> Iedereen direct terug naar de lobby!
+                        if (momenteelRondeId !== 0) {
+                            momenteelRondeId = 0;
+                            document.getElementById('quizView').style.display = 'none';
+                            document.getElementById('resultView').style.display = 'none';
+                            document.getElementById('unmuteView').style.display = 'none';
+                            document.getElementById('lobbyView').style.display = 'block';
+                            document.getElementById('hj2Audio').pause();
+                        }
+                    }
+                })
+                .catch(err => console.error("Ticker error:", err));
+        }, 1000);
+
+        // Functie om de battle te starten
+        function startNieuweBattle() {
+            fetch('hj2_start_battle.php')
+                .then(response => {
+                    if (!response.ok) throw new Error("HTTP Foutcode: " + response.status);
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const res = JSON.parse(text);
+                        if (res.status === 'error') {
+                            alert("🚨 Spelfout: " + res.message);
+                        }
+                    } catch(e) {
+                        alert("❌ Server PHP Fout:\n" + text);
+                    }
+                })
+                .catch(err => {
+                    alert("🌐 Kan geen verbinding maken met de Pi: " + err.message);
+                });
+        }
+
+        // Activeer het geluid na de browser-blokkade bypass
+        function activeerGeluidEnQuiz() {
+            geluidGeactiveerd = true;
+            document.getElementById('unmuteView').style.display = 'none';
+            document.getElementById('quizView').style.display = 'flex';
+            
+            let audio = document.getElementById('hj2Audio');
+            audio.play().catch(e => console.log("Audio play geblokkeerd"));
+
+            fetch('hj2_status.php')
+                .then(r => r.json())
+                .then(data => {
+                    let html = '';
+                    data.options.forEach(jaar => {
+                        html += `<button class="btn btn-choice" onclick="stuurAntwoord(${jaar})">${jaar}</button>`;
+                    });
+                    document.getElementById('choicesGrid').innerHTML = html;
+                });
+        }
+
+        // Verzend het gekozen jaartal
+        function stuurAntwoord(gekozenJaar) {
+            if (alGedruktDezeRonde) return;
+            alGedruktDezeRonde = true;
+
+            document.getElementById('quizView').style.display = 'none';
+            document.getElementById('resultView').style.display = 'block';
+            document.getElementById('resultBadge').innerHTML = "⏳ Controleren...";
+
+            let formData = new FormData();
+            formData.append('jaar', gekozenJaar);
+
+            fetch('hj2_verwerk_antwoord.php', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(res => {
+                    let badge = document.getElementById('resultBadge');
+                    if (res.status === 'correct') {
+                        badge.innerHTML = `<span style="color:#00ffcc; font-weight:900;">🎉 GOED!</span><br><span style="font-size:16px;">+${res.points} Punten</span>`;
+                    } else {
+                        badge.innerHTML = `<span style="color:#ff2d55; font-weight:900;">❌ FOUT!</span>`;
+                    }
+                })
+                .catch(err => {
+                    document.getElementById('resultBadge').innerHTML = "❌ Fout bij verwerken antwoord";
+                });
+        }
+
+        // Nood-reset logica voor vastgelopen rondes
+        function noodReset() {
+            if (confirm("Weet je zeker dat je de huidige ronde wilt forceren te stoppen?")) {
+                fetch('hj2_verwerk_antwoord.php?sluit_ronde=1')
+                    .then(() => {
+                        alert("🔄 Spel gereset naar de lobby!");
+                        window.location.reload();
+                    });
+            }
+        }
+
+        // Bouw het scorebord in de lobby op
+        function bouwScorebord(lijst, rondeActief) {
+            let html = '';
+            lijst.forEach((speler, index) => {
+                let statusIcoon = (rondeActief === 1 && speler.gekozen_jaar > 0) ? '✅' : '⏳';
+                html += `<div class="score-row">
+                            <span>${index+1}. <strong>${speler.username}</strong> ${statusIcoon}</span>
+                            <span style="color:#00ffcc; font-weight:bold;">${speler.points} Pnt</span>
+                         </div>`;
+            });
+            document.getElementById('lobbyScores').innerHTML = html;
+        }
+
+        // Toon live antwoorden
+        function updateLiveAntwoorden(lijst) {
+            let html = '';
+            lijst.forEach(speler => {
+                if (speler.gekozen_jaar > 0) {
+                    html += `<div style="font-size:14px; margin:5px 0; text-align:left;">
+                                👤 <strong>${speler.username}</strong> koos: <span class="badge-choice">${speler.gekozen_jaar}</span>
+                             </div>`;
+                }
+            });
+            document.getElementById('liveRoundAnswers').innerHTML = html || '<p style="color:#555;margin:0;">Wachten tot spelers klikken...</p>';
+        }
+    </script>
+
 
 </body>
 </html>
