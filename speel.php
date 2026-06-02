@@ -131,7 +131,7 @@ if (empty($preview_url)) {
         <?php require_once('comp_ranglijst.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
-		<?php //require_once('comp_multiplayer_sync.php'); ?>
+		<?php require_once('comp_multiplayer_sync.php'); ?>
 		
 		<!-- Footer -->
         <div class="footer">
