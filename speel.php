@@ -115,11 +115,17 @@ if (empty($preview_url)) {
 		<!-- 🧱 BOUWSTEEN 4: NIEUW! MEERKEUZE QUIZ KNOPPEN -->
         <?php require_once('comp_quiz.php'); ?>
 		
+		<!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
+        <?php require_once('comp_nieuwe_info.php'); ?>
+		
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_nieuwe_info.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
         <?php //require_once('comp_knoppen.php'); ?>
+		
+		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
+        <?php require_once('comp_menunop.php'); ?>
 
 		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
         <?php //require_once('comp_ranglijst.php'); ?>
