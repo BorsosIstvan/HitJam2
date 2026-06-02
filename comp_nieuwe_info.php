@@ -24,7 +24,7 @@
 
 <script>
 // Dit houdt de status van de kaart rotsvast bij in het browsergeheugen
-let kaartStaatOpen = false;
+let kaartStaatOpen = true;
 
 function verwerkKaartKlik() {
     const audio = document.getElementById('soloAudio');
