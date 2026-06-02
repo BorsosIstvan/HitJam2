@@ -129,7 +129,7 @@ if (empty($preview_url)) {
 		
 		<!-- Footer -->
         <div class="footer">
-            POWERED BY RASPBERRY PI & APPLE MUSIC
+            POWERED BY JBL & APPLE MUSIC
         </div>
 
     </div>
