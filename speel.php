@@ -116,7 +116,7 @@ if (empty($preview_url)) {
         <?php require_once('comp_quiz.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
-        <?php require_once('comp_info.php'); ?>
+        <?php //require_once('comp_info.php'); ?>
 		
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_nieuwe_info.php'); ?>
