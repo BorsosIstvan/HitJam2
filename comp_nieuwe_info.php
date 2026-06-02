@@ -24,7 +24,7 @@
 
 <script>
 // Dit houdt de status van de kaart rotsvast bij in het browsergeheugen
-let kaartStaatOpen = true;
+let kaartStaatOpen = false;
 
 function verwerkKaartKlik() {
     const audio = document.getElementById('soloAudio');
@@ -40,7 +40,7 @@ function verwerkKaartKlik() {
         if (playBtn) { playBtn.innerHTML = "▶️"; playBtn.classList.remove('playing'); }
 
         // Schakel de visuele elementen om binnen de kaart
-        document.getElementById('infoGeheimTxt').style.display = 'none';
+        document.getElementById('infoGeheimTxt').style.display = 'block';
         document.getElementById('infoDataSectie').style.display = 'block';
 
         // Geef de geopende kaart een stabiele neon-groene rand (blijft vanaf nu zo staan!)
