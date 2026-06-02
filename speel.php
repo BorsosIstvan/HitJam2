@@ -107,14 +107,14 @@ if (empty($preview_url)) {
 		<!-- 🧱 BOUWSTEEN 4: NIEUW! MEERKEUZE QUIZ KNOPPEN -->
         <?php require_once('comp_quiz.php'); ?>
 
+		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
+        <?php require_once('comp_ranglijst.php'); ?>
+
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_info.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
         <?php require_once('comp_multiplayer_sync.php'); ?>
-		
-		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
-        <?php require_once('comp_ranglijst.php'); ?>
 
 		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
         <?php require_once('comp_knoppen.php'); ?>
