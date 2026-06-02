@@ -119,7 +119,7 @@ if (empty($preview_url)) {
         <?php require_once('comp_info.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
-        <?php require_once('comp_knoppen.php'); ?>
+        <?php require_once('comp_nieuwe_knoppen.php'); ?>
 
 		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
         <?php //require_once('comp_ranglijst.php'); ?>
