@@ -1,0 +1,22 @@
+{
+  "short_name": "HitJam2App",
+  "name": "Hit and Jam 2 App",
+  "start_url": "/HitJam2/index.php",
+  "scope": "/HitJam2/",
+  "icons": [
+    {
+      "src": "/HitJam2/icon/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/HitJam2/icon/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "display": "standalone",
+  "orientation": "portrait"
+}
