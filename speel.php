@@ -97,15 +97,18 @@ if (empty($preview_url)) {
             <h1 class="logo">HitJam 2</h1>
             <p style="color:#aaa; font-size:14px;">Gebouwd met onafhankelijke bouwstenen!</p>
         </div>
-		
-		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
-        <?php require_once('comp_ranglijst.php'); ?>
+				
+		<!-- 🧱 BOUWSTEEN 5: NIEUW! LIVE SCORE & STREAK DISLPAY -->
+		<?php require_once('comp_punten.php'); ?>
 
         <!-- 🧱 BOUWSTEEN 1: AUDIO CONTROLLER -->
         <?php require_once('comp_audio.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 4: NIEUW! MEERKEUZE QUIZ KNOPPEN -->
         <?php require_once('comp_quiz.php'); ?>
+						
+		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
+        <?php require_once('comp_knoppen.php'); ?>
 
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_info.php'); ?>
@@ -113,11 +116,8 @@ if (empty($preview_url)) {
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
         <?php require_once('comp_multiplayer_sync.php'); ?>
 		
-		<!-- 🧱 BOUWSTEEN 5: NIEUW! LIVE SCORE & STREAK DISLPAY -->
-		<?php require_once('comp_punten.php'); ?>
-		
-		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
-        <?php require_once('comp_knoppen.php'); ?>
+		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
+        <?php require_once('comp_ranglijst.php'); ?>
 
     </div>
 
