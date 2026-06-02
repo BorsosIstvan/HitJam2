@@ -98,8 +98,8 @@ if (empty($preview_url)) {
             <p style="color:#aaa; font-size:14px;">Gebouwd met onafhankelijke bouwstenen!</p>
         </div>
 		
-		<!-- 🧱 BOUWSTEEN 5: NIEUW! LIVE SCORE & STREAK DISLPAY -->
-		<?php require_once('comp_punten.php'); ?>
+		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
+        <?php require_once('comp_ranglijst.php'); ?>
 
         <!-- 🧱 BOUWSTEEN 1: AUDIO CONTROLLER -->
         <?php require_once('comp_audio.php'); ?>
@@ -109,15 +109,15 @@ if (empty($preview_url)) {
 
         <!-- 🧱 BOUWSTEEN 2: GEHEIME INFOKAART -->
         <?php require_once('comp_info.php'); ?>
-
-        <!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
-        <?php require_once('comp_knoppen.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
         <?php require_once('comp_multiplayer_sync.php'); ?>
 		
-		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
-        <?php require_once('comp_ranglijst.php'); ?>
+		<!-- 🧱 BOUWSTEEN 5: NIEUW! LIVE SCORE & STREAK DISLPAY -->
+		<?php require_once('comp_punten.php'); ?>
+		
+		<!-- 🧱 BOUWSTEEN 3: ACTIEKNOPPEN -->
+        <?php require_once('comp_knoppen.php'); ?>
 
     </div>
 
