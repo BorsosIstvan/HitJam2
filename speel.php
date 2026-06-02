@@ -88,6 +88,14 @@ if (empty($preview_url)) {
         .btn-next { background: linear-gradient(90deg, #007bff, #00ffcc); color: white; display: none; margin-bottom: 15px; text-decoration: none; text-align: center; box-sizing: border-box; }
         .btn-back { background: #1f2026; color: white; border: 1px solid #33343f; text-decoration: none; display: block; text-align: center; box-sizing: border-box; }
         .btn:active { transform: scale(0.96); }
+		
+		        /* Footer */
+        .footer {
+            font-size: 11px;
+            color: #4f4f4f;
+            text-align: center;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +126,11 @@ if (empty($preview_url)) {
 		
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
 		<?php //require_once('comp_multiplayer_sync.php'); ?>
+		
+		<!-- Footer -->
+        <div class="footer">
+            POWERED BY RASPBERRY PI & APPLE MUSIC
+        </div>
 
     </div>
 
