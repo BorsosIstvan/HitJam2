@@ -25,8 +25,8 @@
 <script>
 // Dit houdt de status van de kaart rotsvast bij in het browsergeheugen
 let kaartStaatOpen = false;
-document.getElementById('infoGeheimTxt').style.display = 'none';
-document.getElementById('infoDataSectie').style.display = 'block';
+document.getElementById('infoGeheimTxt').style.display = 'block';
+document.getElementById('infoDataSectie').style.display = 'none';
 
 function verwerkKaartKlik() {
     const audio = document.getElementById('soloAudio');
