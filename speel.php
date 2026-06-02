@@ -114,10 +114,10 @@ if (empty($preview_url)) {
         <?php require_once('comp_knoppen.php'); ?>
 
 		<!-- 🧱 BOUWSTEEN 6: NIEUW! LIVE MULTIPLAYER RANGLIJST -->
-        <?php require_once('comp_ranglijst.php'); ?>
+        <?php //require_once('comp_ranglijst.php'); ?>
 		
 		<!-- 🧱 BOUWSTEEN 7: NIEUW! MULTIPLAYER SYNCHRONISATIE -->
-        <?php require_once('comp_multiplayer_sync.php'); ?>
+		<?php //require_once('comp_multiplayer_sync.php'); ?>
 
     </div>
 
