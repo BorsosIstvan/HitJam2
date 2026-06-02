@@ -1,12 +1,12 @@
 <!-- Bouwsteen: Interactieve Infokaart & Spelknop in één -->
 <div class="song-info-card" id="infoCard" onclick="verwerkKaartKlik()" style="background: rgba(255, 255, 255, 0.04); padding: 25px 20px; border-radius: 24px; border: 2px solid #ff2d55; margin: 25px 0; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 8px 25px rgba(255, 45, 85, 0.1);">
     
-    <!-- STANDAARD TEXT (Als de gegevens nog geheim zijn) -->
+    <!-- STANDAARD TEKST (Als de gegevens nog geheim zijn) -->
     <div id="infoGeheimTxt" style="font-size: 18px; font-weight: bold; color: #ff2d55; text-transform: uppercase; letter-spacing: 1px; padding: 20px 0;">
         👁️ Klik om te onthullen
     </div>
 
-    <!-- DE GEGEVENS (Standaard onzichtbaar via opacity: 0) -->
+    <!-- DE GEGEVENS (Standaard onzichtbaar) -->
     <div id="infoDataSectie" style="display: none; animation: fadeInHJ2 0.4s ease;">
         <div class="info-year" style="font-size: 56px; font-weight: 900; color: #ff9500; margin-bottom: 5px;"><?= $song['year'] ?></div>
         <div class="info-title" style="font-size: 22px; font-weight: 800; margin-bottom: 5px;"><?= htmlspecialchars($song['title']) ?></div>
@@ -62,8 +62,10 @@ function verwerkKaartKlik() {
 // Als een speler op een jaarknop klikt in comp_quiz.php, moet de kaart OOK direct openklappen!
 if (typeof controleerJaar === "function") {
     const origineleControleerJaar = controleerJaar;
+    
+    // Smetvrije fix zonder spaties in de parameters!
     controleerJaar = function(knopElement, gekozenJaar, correctJaar) {
-        // Voer eerst de normale goed/fout logica uit
+        // Voer eerst de normale goed/fout logica uit van comp_quiz.php
         origineleControleerJaar(knopElement, gekozenJaar, correctJaar);
         
         // Laat de kaart direct transformeren zonder dat je erop hoeft te klikken!
