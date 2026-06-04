@@ -27,11 +27,12 @@ $stmt->execute([$username]);
 
 <!DOCTYPE html>
 <html lang="nl">
-<script src="sw.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>HitJam 2 - Hoofdmenu</title>
+    <!-- STAP 1: Koppel hier je manifest.json -->
+    <link rel="manifest" href="/HitJam2/manifest.json">
     <style>
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #0b0c10; color: #ffffff; display: flex; justify-content: center; min-height: 100vh; }
         .app-container { width: 100%; max-width: 450px; background: linear-gradient(180deg, #160c1b 0%, #0b0c10 100%); padding: 30px 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
@@ -71,6 +72,17 @@ $stmt->execute([$username]);
             HITJAM V2 • 100% INDEPENDENT MODULE
         </div>
     </div>
+
+    <!-- STAP 2: Registreer de service worker via JavaScript -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/HitJam2/sw.js')
+                    .then(reg => console.log('Service Worker geregistreerd!', reg))
+                    .catch(err => console.log('Service Worker registratie mislukt:', err));
+            });
+        }
+    </script>
 
 </body>
 </html>
