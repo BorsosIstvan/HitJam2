@@ -1,17 +1,17 @@
 {
   "short_name": "HitJam2App",
   "name": "Hit and Jam 2 App",
-  "start_url": "/HitJam2/index.php",
-  "scope": "/HitJam2/",
+  "start_url": "/index.php",
+  "scope": "/",
   "icons": [
     {
-      "src": "/HitJam2/icon/icon-192.png",
+      "src": "/icon/icon-192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/HitJam2/icon/icon-512.png",
+      "src": "/icon/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
