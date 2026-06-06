@@ -48,6 +48,16 @@ $stmt->execute([$username]);
         .user-name { color: #ff9500; font-weight: bold; }
         .footer { font-size: 11px; color: #4f4f4f; text-align: center; letter-spacing: 1px; }
     </style>
+        <!-- STAP 2: Registreer de service worker via JavaScript -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/HitJam2/sw.js')
+                    .then(reg => console.log('Service Worker geregistreerd!', reg))
+                    .catch(err => console.log('Service Worker registratie mislukt:', err));
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -72,17 +82,6 @@ $stmt->execute([$username]);
             HITJAM V2 • 100% INDEPENDENT MODULE
         </div>
     </div>
-
-    <!-- STAP 2: Registreer de service worker via JavaScript -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/HitJam2/sw.js')
-                    .then(reg => console.log('Service Worker geregistreerd!', reg))
-                    .catch(err => console.log('Service Worker registratie mislukt:', err));
-            });
-        }
-    </script>
 
 </body>
 </html>
