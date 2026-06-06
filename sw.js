@@ -1,10 +1,10 @@
 const CACHE_NAME = 'mijn-app-cache-v1';
 const ASSETS = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon/icon-192.png',
-  '/icon/icon-512.png'
+  './index.html',
+  './manifest.json',
+  './icon/icon-192.png',
+  './icon/icon-512.png'
 ];
 
 // Bestanden opslaan tijdens installatie
