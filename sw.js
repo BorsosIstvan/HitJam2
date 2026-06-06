@@ -3,8 +3,8 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icon/icon_192.png',
-  '/icon/icon_512.png'
+  '/icon/icon-192.png',
+  '/icon/icon-512.png'
 ];
 
 // Bestanden opslaan tijdens installatie
