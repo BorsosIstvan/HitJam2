@@ -16,6 +16,7 @@ self.addEventListener('install', (e) => {
   );
 });
 
+/*
 // Bestanden laden vanuit de cache als er geen internet is
 self.addEventListener('fetch', (e) => {
   e.respondWith(
@@ -24,3 +25,4 @@ self.addEventListener('fetch', (e) => {
     })
   );
 });
+*/
