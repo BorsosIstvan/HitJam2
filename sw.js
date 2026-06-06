@@ -1,24 +1,26 @@
-const CACHE_NAME = 'php-app-cache-v1'; // Verhoogd naar v5
-const urlsToCache = [
-  '/HitJam2/',
-  '/HitJam2/index.php',
-  '/HitJam2/manifest.json'
+const CACHE_NAME = 'mijn-app-cache-v1';
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
-// Installeer de service worker en sla basisbestanden op
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
+// Bestanden opslaan tijdens installatie
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
     })
   );
 });
 
-// Zorg dat de app werkt, zelfs met een trage verbinding
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+// Bestanden laden vanuit de cache als er geen internet is
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
     })
   );
 });
